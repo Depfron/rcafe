@@ -1,4 +1,4 @@
-<h2><%= bulletin_name params[:bulletin_id] %></h2>
+<h2><%= bulletin_name params[:bulletin_id] %> <small><%= link_to '설정', edit_bulletin_path(params[:bulletin_id])%></small></h2>
 
 <table class="table">
   <thead>
@@ -12,7 +12,7 @@
   
   <% @posts.each do |post| %>
   <tr>
-    <td><%= post.title %></td>
+    <td><%= post.title %> <small>( <%= post.comments.size %> )</small></td>
     <td>
       <%= link_to 'Show', [post.bulletin, post], class:'btn btn-default' %>
       <%= link_to 'Edit', edit_bulletin_post_path(post.bulletin, post), class:'btn btn-default' %>
@@ -22,6 +22,7 @@
 <% end %>
   </tbody>
 </table>
+
 
 
 <%= link_to 'New Post', new_bulletin_post_path, class: 'btn btn-default' %>

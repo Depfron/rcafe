@@ -4,8 +4,16 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
   def index
+  if params[:bulletin_id]
     @posts = @bulletin.posts.all
+  else
+    if params[:tag]
+      @posts = Post.tagged_with(params[:tag])
+    else
+      @posts = Post.all
+    end
   end
+end
 
   def show
   end
@@ -53,14 +61,18 @@ class PostsController < ApplicationController
 
   private
     def set_bulletin
-      @bulletin = Bulletin.find(params[:bulletin_id])
-    end
+    @bulletin = Bulletin.find(params[:bulletin_id]) if params[:bulletin_id]
+  end
 
-    def set_post
+  def set_post
+    if params[:bulletin_id]
       @post = @bulletin.posts.find(params[:id])
+    else
+      @post = Post.find(params[:id])
     end
+  end
 
     def post_params
-      params.require(:post).permit(:title, :content)
+      params.require(:post).permit(:title, :content, :picture, :picture_cache, :tag_list_fixed)   
     end
 end
